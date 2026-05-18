@@ -6,10 +6,9 @@ public class PlayerController : MonoBehaviour
     [Header("Movimiento")]
     public float moveSpeed = 8f;
 
-    [Header("Límites del área de juego")]
-    public float limitX = 4f;
-    public float limitZMin = -9f;
-    public float limitZMax = 2f;
+    [Header("Límites del área de juego (el jugador puede ir hasta acá)")]
+    public float limitX = 14f;
+    public float limitY = 7f;
 
     private Rigidbody rb;
     private Vector2 inputMovimiento;
@@ -19,8 +18,6 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    // El nuevo Input System llama a este método automáticamente
-    // cuando detecta el Action "Move" (viene incluido por defecto)
     void OnMove(InputValue value)
     {
         inputMovimiento = value.Get<Vector2>();
@@ -33,13 +30,15 @@ public class PlayerController : MonoBehaviour
 
     void MoverJugador()
     {
-        Vector3 direccion = new Vector3(inputMovimiento.x, 0f, inputMovimiento.y).normalized;
+        // W/S = arriba/abajo (eje Y), A/D = izquierda/derecha (eje X)
+        Vector3 direccion = new Vector3(inputMovimiento.x, inputMovimiento.y, 0f).normalized;
 
         Vector3 nuevaPosicion = rb.position + direccion * moveSpeed * Time.fixedDeltaTime;
 
+        // Limitar dentro del área de juego
         nuevaPosicion.x = Mathf.Clamp(nuevaPosicion.x, -limitX, limitX);
-        nuevaPosicion.z = Mathf.Clamp(nuevaPosicion.z, limitZMin, limitZMax);
-        nuevaPosicion.y = 1f;
+        nuevaPosicion.y = Mathf.Clamp(nuevaPosicion.y, -limitY, limitY);
+        nuevaPosicion.z = rb.position.z; // Z fijo siempre
 
         rb.MovePosition(nuevaPosicion);
     }
