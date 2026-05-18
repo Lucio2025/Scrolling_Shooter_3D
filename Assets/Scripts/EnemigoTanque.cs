@@ -6,8 +6,8 @@ public class EnemigoTanque : Enemigo
     {
         vidaMaxima = 80;
         velocidadMovimiento = 2.5f;
-        danioAlJugador = 20;
-        puntaje = 250;
+        danioAlJugador = 1;
+        puntaje = 15;
         base.Start();
     }
 }

@@ -444,6 +444,7 @@ GameObject:
   - component: {fileID: 341106997}
   - component: {fileID: 341106999}
   - component: {fileID: 341106998}
+  - component: {fileID: 341107000}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -656,6 +657,25 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   camPrincipal: {fileID: 330585545}
+--- !u!114 &341107000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341106990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbb053005448d5c46972a2eff9bd0369, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VidaJugador
+  vidaMaxima: 3
+  corazon1: {fileID: 51243388}
+  corazon2: {fileID: 1798011575}
+  corazon3: {fileID: 1560609366}
+  texturaCorazonLleno: {fileID: 2800000, guid: 4034a0dd2f8810c46bfc1c1385cbe0ae, type: 3}
+  texturaCorazonVacio: {fileID: 2800000, guid: a24d56d498af9e64a9f7f79c3e6948c6, type: 3}
+  textoPuntaje: {fileID: 586668743}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,7 +950,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -100, y: 50}
+  m_AnchoredPosition: {x: -218, y: 50}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &586668743
@@ -980,8 +1000,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1019,7 +1039,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -72.41382, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

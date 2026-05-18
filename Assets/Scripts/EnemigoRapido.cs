@@ -6,9 +6,9 @@ public class EnemigoRapido : Enemigo
     {
         vidaMaxima = 15;
         velocidadMovimiento = 9f;
-        danioAlJugador = 5;
+        danioAlJugador = 1;
         tiempoHastaAtacar = 3f;
-        puntaje = 150;
+        puntaje = 15;
         base.Start();
     }
 }

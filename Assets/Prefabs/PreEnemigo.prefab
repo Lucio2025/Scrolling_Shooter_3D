@@ -108,11 +108,11 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1.5, y: 1.5, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &116844804524218674
 Rigidbody:
@@ -155,8 +155,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemigo
   vidaMaxima: 50
   velocidadMovimiento: 4
-  danioAlJugador: 10
-  puntaje: 100
+  danioAlJugador: 1
+  puntaje: 10
   tiempoEntreMovimientos: 7
   distanciaMovimiento: 5
   tiempoHastaAtacar: 10

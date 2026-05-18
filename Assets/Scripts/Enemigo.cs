@@ -5,8 +5,8 @@ public class Enemigo : MonoBehaviour
     [Header("Stats")]
     public int vidaMaxima = 30;
     public float velocidadMovimiento = 4f;
-    public int danioAlJugador = 10;
-    public int puntaje = 100;
+    public int danioAlJugador = 1;
+    public int puntaje = 10;
 
     [Header("Movimiento errático")]
     public float tiempoEntreMovimientos = 0.4f;
@@ -101,7 +101,12 @@ public class Enemigo : MonoBehaviour
 
     protected virtual void Morir()
     {
-        // Próximamente: sumar puntaje, partículas, etc.
+        // Sumar puntaje al jugador
+        VidaJugador vidaJugador = GameObject.FindGameObjectWithTag("Player")
+                                            .GetComponent<VidaJugador>();
+        if (vidaJugador != null)
+            vidaJugador.SumarPuntaje(puntaje);
+
         Destroy(gameObject);
     }
 
@@ -110,7 +115,7 @@ public class Enemigo : MonoBehaviour
     {
         if (otro.CompareTag("Player"))
         {
-            //otro.GetComponent<VidaJugador>()?.RecibirDanio(danioAlJugador);
+            otro.GetComponent<VidaJugador>()?.RecibirDanio(danioAlJugador);
             Morir();
         }
     }
