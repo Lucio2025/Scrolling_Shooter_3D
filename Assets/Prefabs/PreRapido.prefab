@@ -162,3 +162,6 @@ MonoBehaviour:
   tiempoHastaAtacar: 12
   limitX: 12
   limitY: 6
+  prefabExplosion: {fileID: 2441670769546820113, guid: 36fcb0a533d86b148bfa9d9b7ef43c2f, type: 3}
+  duracionParpadeo: 0.12
+  colorParpadeo: {r: 1, g: 0.3, b: 0.3, a: 1}

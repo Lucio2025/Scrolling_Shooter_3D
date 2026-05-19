@@ -6,12 +6,13 @@ public class SpawnerEnemigos : MonoBehaviour
     public GameObject preEnemigo;
     public GameObject preTanque;
     public GameObject preRapido;
+    public GameObject preFrancotirador;
 
-    [Header("Configuración de spawn")]
+    [Header("Configuración")]
     public float tiempoEntreSpawns = 2f;
     public float limitX = 14f;
     public float limitY = 6f;
-    public float posicionZ = 15f;  // Desde dónde aparecen (adelante)
+    public float posicionZ = 15f;
 
     private float timer;
 
@@ -27,18 +28,17 @@ public class SpawnerEnemigos : MonoBehaviour
 
     void SpawnearEnemigo()
     {
-        // Posición aleatoria en los bordes laterales
         float x = Random.value > 0.5f ? limitX : -limitX;
         float y = Random.Range(-limitY, limitY);
         Vector3 posicion = new Vector3(x, y, posicionZ);
 
-        // Elegir tipo con probabilidad
         float roll = Random.value;
         GameObject prefab;
 
-        if (roll < 0.6f) prefab = preEnemigo;   // 60% básico
-        else if (roll < 0.85f) prefab = preRapido;    // 25% rápido
-        else prefab = preTanque;    // 15% tanque
+        if (roll < 0.5f) prefab = preEnemigo;         // 50% básico
+        else if (roll < 0.7f) prefab = preRapido;          // 20% rápido
+        else if (roll < 0.85f) prefab = preFrancotirador;   // 15% francotirador
+        else prefab = preTanque;           // 15% tanque
 
         Instantiate(prefab, posicion, Quaternion.identity);
     }

@@ -13,20 +13,30 @@ public class Enemigo : MonoBehaviour
     public float distanciaMovimiento = 3f;
 
     [Header("Comportamiento agresivo")]
-    public float tiempoHastaAtacar = 5f;  // Segundos hasta que ataca
+    public float tiempoHastaAtacar = 5f;
 
     [Header("Límites de la pantalla")]
     public float limitX = 12f;
     public float limitY = 6f;
 
+    [Header("Efectos visuales")]
+    public GameObject prefabExplosion;         // Arrastrá tu prefab de partículas
+    public float duracionParpadeo = 0.12f;
+    public Color colorParpadeo = new Color(1f, 0.3f, 0.3f); // Rojo claro
+
     // Privados
-    private int vidaActual;
-    private Transform jugador;
+    protected int vidaActual;
+    protected Transform jugador;
     private Rigidbody rb;
     private Vector3 destino;
     private float timerMovimiento;
     private float timerAtaque;
     private bool estaAtacando = false;
+
+    // Para el parpadeo
+    private Renderer rendererEnemigo;
+    private Color colorOriginal;
+    private bool parpadeando = false;
 
     protected virtual void Start()
     {
@@ -35,13 +45,17 @@ public class Enemigo : MonoBehaviour
         jugador = GameObject.FindGameObjectWithTag("Player").transform;
         timerMovimiento = tiempoEntreMovimientos;
         timerAtaque = tiempoHastaAtacar;
+
+        rendererEnemigo = GetComponent<Renderer>();
+        if (rendererEnemigo != null)
+            colorOriginal = rendererEnemigo.material.color;
+
         ElegirNuevoDestino();
     }
 
     void Update()
     {
         timerAtaque -= Time.deltaTime;
-
         if (timerAtaque <= 0f)
             estaAtacando = true;
 
@@ -53,17 +67,15 @@ public class Enemigo : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Mover hacia el destino actual
         Vector3 direccion = (destino - rb.position).normalized;
         float distancia = Vector3.Distance(rb.position, destino);
 
         if (distancia > 0.3f)
             rb.MovePosition(rb.position + direccion * velocidadMovimiento * Time.fixedDeltaTime);
         else if (!estaAtacando)
-            ElegirNuevoDestino(); // Llegó al destino → elegir otro
+            ElegirNuevoDestino();
     }
 
-    // ── Movimiento aleatorio dentro de la pantalla ──
     void ComportamientoErratico()
     {
         timerMovimiento -= Time.deltaTime;
@@ -79,29 +91,58 @@ public class Enemigo : MonoBehaviour
         destino = new Vector3(
             Random.Range(-limitX, limitX),
             Random.Range(-limitY, limitY),
-            transform.position.z + Random.Range(-1.5f, 1.5f) // pequeña variación en Z
+            transform.position.z + Random.Range(-1.5f, 1.5f)
         );
     }
 
-    // ── Comportamiento agresivo: va directo al jugador ──
     void ComportamientoAgresivo()
     {
         if (jugador != null)
             destino = jugador.position;
     }
 
-    // ── Recibir daño ──
     public void RecibirDanio(int danio)
     {
         vidaActual -= danio;
+
+        if (!parpadeando)
+            StartCoroutine(Parpadear());
 
         if (vidaActual <= 0)
             Morir();
     }
 
+    // Parpadeo rojo al recibir daño
+    System.Collections.IEnumerator Parpadear()
+    {
+        parpadeando = true;
+
+        if (rendererEnemigo != null)
+            rendererEnemigo.material.color = colorParpadeo;
+
+        yield return new WaitForSeconds(duracionParpadeo);
+
+        if (rendererEnemigo != null)
+            rendererEnemigo.material.color = colorOriginal;
+
+        parpadeando = false;
+    }
+
     protected virtual void Morir()
     {
-        // Sumar puntaje al jugador
+        Debug.Log("Enemigo murió en: " + transform.position);
+
+        if (prefabExplosion != null)
+        {
+            Debug.Log("Instanciando explosión...");
+            GameObject explosion = Instantiate(prefabExplosion, transform.position, Quaternion.identity);
+            Debug.Log("Explosión creada: " + explosion.name);
+        }
+        else
+        {
+            Debug.LogWarning("prefabExplosion es NULL en " + gameObject.name);
+        }
+
         VidaJugador vidaJugador = GameObject.FindGameObjectWithTag("Player")
                                             .GetComponent<VidaJugador>();
         if (vidaJugador != null)
@@ -110,7 +151,6 @@ public class Enemigo : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // ── Colisión con el jugador ──
     void OnTriggerEnter(Collider otro)
     {
         if (otro.CompareTag("Player"))

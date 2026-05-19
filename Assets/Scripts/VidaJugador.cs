@@ -24,8 +24,11 @@ public class VidaJugador : MonoBehaviour
     public TextMeshProUGUI textoPuntaje;
     private int puntaje = 0;
 
+    private EfectoDanio efectoDanio;
+
     void Start()
     {
+        efectoDanio = GetComponent<EfectoDanio>();
         vidaActual = vidaMaxima;
         ActualizarCorazones();
     }
@@ -49,6 +52,8 @@ public class VidaJugador : MonoBehaviour
         vidaActual = Mathf.Clamp(vidaActual, 0, vidaMaxima);
         ActualizarCorazones();
 
+        efectoDanio?.ActivarEfectoDanio();
+
         // Activar inmunidad temporal
         esInmune = true;
         timerInmunidad = tiempoInmunidad;
@@ -64,6 +69,9 @@ public class VidaJugador : MonoBehaviour
         puntaje += puntos;
         if (textoPuntaje != null)
             textoPuntaje.text = "PUNTAJE: " + puntaje;
+
+        // Verificar si ya ganó
+        GestorJuego.instancia?.VerificarVictoria(puntaje);
     }
 
     void ActualizarCorazones()
@@ -75,7 +83,6 @@ public class VidaJugador : MonoBehaviour
 
     void Morir()
     {
-        Debug.Log("¡Game Over!");
-        // Próximamente: pantalla de Game Over
+        GestorJuego.instancia?.MostrarGameOver(puntaje);
     }
 }
